@@ -1,0 +1,4 @@
+npm run start - convierte el codigo a javascript - al grabar un archivo cambia
+npm run build - crea un paquete para subirlo al servidor (dist)
+npm run start - ahora puedes abrir el navegador en localhost:1234
+

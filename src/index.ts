@@ -1,16 +1,23 @@
 //npm run build
 //npm run start
 
-import { Application, Sprite, Container} from 'pixi.js'
+import { Application, Sprite, Container, Renderer} from 'pixi.js'
 import { Scene } from './scenes/Scene'; // This is the import statement
 //import 'reflect-metadata';
 //import websocket from 'websocket';
 import http from 'http';
 import os from 'os';
 import { DataManager } from './components/DataManager'; // This is the import statement
+//import {Viewport} from 'pixi-viewport';
 
-import {CData} from './components/CData'
+import * as viewport from './components/viewport'
+import * as target from './components/target'
 
+import {CData} from './components/CData';
+
+
+
+/*
 const app = new Application({
 	view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
 	resolution: window.devicePixelRatio || 1,
@@ -30,15 +37,83 @@ clampy.x = app.screen.width / 2;
 clampy.y = app.screen.height / 2;
 
 app.stage.addChild(clampy);
+*/
 
 
 // pass in the screen size to avoid "asking up"
-const sceny: Scene = new Scene(app.screen.width, app.screen.height);
-app.stage.addChild(sceny)
+//const sceny: Scene = new Scene(app.screen.width, app.screen.height);
+//app.stage.addChild(sceny)
 
 console.log("ye");
-//const dataManager:DataManager=new DataManager({},[],false);
-//sceny.addChild(dataManager);
+
+
+let renderer:Renderer;
+
+function createRenderer() {
+    
+    renderer = new Renderer({
+        backgroundAlpha: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        resolution: window.devicePixelRatio,
+        antialias: true,
+    })
+    
+    document.body.appendChild(renderer.view)
+    renderer.view.style.position = 'fixed'
+    renderer.view.style.width = '100vw'
+    renderer.view.style.height = '100vh'
+    renderer.view.style.top = '0'
+    renderer.view.style.left = '0'
+    renderer.view.style.background = 'rgba(0,0,0,.1)'
+    
+}
+
+
+const sceny:Scene = new Scene(window.innerWidth, window.innerHeight);
+
+function start() {
+    createRenderer();
+    viewport.create(renderer);
+    window.onresize = () => {
+        renderer.resize(window.innerWidth, window.innerHeight)
+        viewport.get().resize(window.innerWidth, window.innerHeight)
+    }
+
+    //dataManager=new DataManager({},[],false);
+    let vp = viewport.get();
+    vp.addChild(sceny);
+    
+    CData.viewport=vp;
+    update()
+}
+
+
+function update() {
+    const vp = viewport.get()
+    if (vp.dirty || target.isDirty()) {
+        target.update()
+        renderer.render(vp)
+        vp.dirty = false
+    }
+    requestAnimationFrame(() => update())
+}
+
+window.onload = start
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 function getLocalIpArray(): string[] {

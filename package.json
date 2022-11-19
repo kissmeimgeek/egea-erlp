@@ -7,9 +7,11 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+    "@types/pixi.js": "^5.0.0",
     "@types/socket.io": "^3.0.2",
+    "pixi-heaven": "^0.3.3",
     "pixi-viewport": "^4.37.0",
-    "pixi.js": "^6.3.0",
+    "pixi.js": "^6.5.8",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.5.3",
     "socket.io-client": "^4.5.3",

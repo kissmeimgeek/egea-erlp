@@ -37,6 +37,8 @@ export class CPower extends Container{
 
         fixs:CFixture[];
 
+        dmxIN:number[];
+
         test:boolean;
     /*
     constructor(Controllernumber: number,Protocol: String,Devicetype: String,
@@ -50,7 +52,7 @@ export class CPower extends Container{
         enabled:boolean,
         port:number,fixs:CFixture[]){
 */
-    fixGraphic:Graphics;
+    //fixGraphic:Graphics;
 
     constructor(_power:any){
         super();
@@ -72,6 +74,7 @@ export class CPower extends Container{
         this.port=_power.port;
 
         this.fixs=_power.fixs;
+
         for (var i=0;i<_power.fixs.length;i++){
             this.fixs[i]=new CFixture(_power.fixs[i]);
             this.addChild(this.fixs[i]);
@@ -79,6 +82,8 @@ export class CPower extends Container{
         
         this.test=true;
 
+        this.dmxIN=[];
+        /*
         this.fixGraphic = new Graphics();
 
         // Rectangle
@@ -87,9 +92,17 @@ export class CPower extends Container{
         this.fixGraphic.endFill();  
         
         this.addChild(this.fixGraphic);
+        */
     }
 
+    updateFixturesColor(){
+        for (var i=0;i<this.fixs.length;i++){
+            this.fixs[i].dmxToColor(this.dmxIN);
+            this.fixs[i].draw();
+        }
+    }
 
+    
 
     
 }

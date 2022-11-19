@@ -1,5 +1,5 @@
 //import {Websocket, WebsocketBuilder, ConstantBackoff, TimeBuffer} from 'websocket-ts';
-import { Container, Sprite, Graphics, utils} from "pixi.js";
+import { Container} from "pixi.js";
 import { io, Socket } from "socket.io-client";
 
 import { CData } from "./CData";
@@ -10,6 +10,8 @@ import { CFixture } from "./CFixture";
 interface ServerToClientEvents {
     rgetAllPowers: (powers:CPower[]) => void;
     rgetAllNet: (net:any) => void;
+    rdmxIN: (dmxIN:any) => void;
+    rdmxINPowers: (dmxIN:any) => void;
     
     basicEmit: (a: number, b: string, c: Buffer) => void;
     withAck: (d: string, callback: (e: number) => void) => void;
@@ -17,7 +19,8 @@ interface ServerToClientEvents {
   
   interface ClientToServerEvents {
     wgetAllNet: () => void;
-
+    wdmxINPowers: () => void;
+    wdmxIN:() => void;
   }
   
   interface InterServerEvents {
@@ -54,9 +57,28 @@ interface ServerToClientEvents {
       CData.scene.dataManager=new DataManager(_response.net.d,_response.net.powers,_response.net.init);
       CData.scene.addChild(CData.scene.dataManager);
       console.log(CData.net);
+      socket.emit("wdmxIN"); 
+      socket.emit("wdmxINPowers"); 
   });
 
-  
+socket.on("rdmxINPowers", (_response) => {
+    //console.log("rdmxIN");
+    socket.emit("wdmxINPowers"); 
+    CData.scene.dataManager.updateDMXS(_response);
+    //CData.scene.patchViewer.updateDMX();
+    CData.viewport.dirty=true;
+});
+
+socket.on("rdmxIN", (_response) => {
+  //console.log("rdmxIN");
+  socket.emit("wdmxIN"); 
+  //CData.scene.dataManager.updateDMXS(_response);
+  //CData.scene.patchViewer.updateDMX();
+  CData.scene.dataManager.dmxIN=_response;
+  CData.scene.patchViewer.updateDMX(_response);
+  CData.viewport.dirty=true;
+});
+
   socket.on("rgetAllPowers", (powers) => {
       for (let i=0;i<powers.length;i++){
       //    var dataManager:DataManager=new DataManager(net.d,net.powers,net.init);
@@ -98,10 +120,11 @@ export class DataManager extends Container{
     d:any;
     powers:CPower[];
     init:boolean;
-    
+    dmxIN:number[]=[];
+
     test:boolean=true;
     
-    fixGraphic:Graphics;
+    //fixGraphic:Graphics;
     constructor(d:any,powers:CPower[],init:boolean) {
         super();
 
@@ -118,16 +141,18 @@ export class DataManager extends Container{
         }
         
         this.init=init;
-
+        /*
         this.fixGraphic = new Graphics();
 
         // Rectangle
+        
         this.fixGraphic.beginFill(0xFF00FF);//utils.rgb2hex([this.color.r,this.color.g,this.color.b]));
         this.fixGraphic.drawRect(100, 50, 100, 100);
         this.fixGraphic.endFill();  
         
         this.addChild(this.fixGraphic);
-
+        */
+        
         /*
         //Connect to WS and ask for data
         const ws = new WebsocketBuilder('ws://note10/ws/erlp/data:1880')
@@ -153,6 +178,12 @@ export class DataManager extends Container{
         */
     }
 
+    updateDMXS(dmxPowersIN:number[][]){
+      for (var i=0;i<this.powers.length;i++){
+        this.powers[i].dmxIN=dmxPowersIN[i];
+        this.powers[i].updateFixturesColor();
+      }
+    }
 
 }
 

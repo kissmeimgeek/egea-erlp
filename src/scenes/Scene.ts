@@ -1,7 +1,9 @@
 import { Container, Sprite, Graphics } from "pixi.js";
 import { DataManager } from '../components/DataManager'; // This is the import statement
+import { CPatchViewer } from "../components/CPatchViewer";
 import { CData } from '../components/CData';
-import { Viewport } from 'pixi-viewport';
+//import { Viewport } from 'pixi-viewport';
+
 
 export class Scene extends Container {
     private readonly screenWidth: number;
@@ -11,7 +13,9 @@ export class Scene extends Container {
     private clampy: Sprite;
     private fixGraphic: Graphics;
 
+
     dataManager:DataManager = new DataManager({},[],false);  //Manager Temporal Por que el que lo construye es el socket
+    patchViewer:CPatchViewer;
 
     constructor(screenWidth: number, screenHeight: number) {
         super(); // Mandatory! This calls the superclass constructor.
@@ -37,5 +41,9 @@ export class Scene extends Container {
         
         //this.addChild(this.fixGraphic);
         CData.scene=this;
+
+        this.patchViewer=new CPatchViewer(1,512,0,3,255);
+        this.addChild(this.patchViewer);
+
     }
 }

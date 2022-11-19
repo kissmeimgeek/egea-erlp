@@ -1,6 +1,7 @@
 //import { io, Socket } from "socket.io-client";
-import { CPower } from "./CPower";
 import { Scene } from "src/scenes/Scene";
+import { CPower } from "./CPower";
+import { Viewport } from "pixi-viewport";
 /*
 interface ServerToClientEvents {
     rgetAllPowers: (powers:CPower[]) => void;
@@ -73,19 +74,56 @@ export type TFixture = {
 
 
 
-
 export class CData{
    
+    
     static dataLoaded:boolean=false;
     static net:any;
     static scene:Scene;
+    static viewport:Viewport;
+
+    static r1_255:number;
+    static r255_1:number;
+
     constructor (scene:Scene){
       CData.net={};
       CData.dataLoaded=false;
       CData.scene=scene;
+
+      CData.r1_255=CData.relacionDeEscala(0,1,0,255);
+      CData.r255_1=CData.relacionDeEscala(0,255,0,1);
     }
+
+
+    //Funcion para escalar RAPIDO un valor que se encuentre en una escala a un valor de la siguiente escala 
+//Primero calculamos la relacion entre las escalas
+
+/* Note, "slope" below is a constant for given numbers, so if you are calculating
+   a lot of output values, it makes sense to calculate it once.  It also makes
+   understanding the code easier */
+  static relacionDeEscala(input_start:number,input_end:number,output_start:number,output_end:number){
+    return (1.0 * (output_end - output_start) / (input_end - input_start));
+  };
+
+//Guardando la relación de escala puedes calculas mucho mas rapido muchos valores
+  static escalaValor(input:number,input_start:number,output_start:number,slope:number){
+    return (output_start + slope * (input - input_start));
+  };
+
+  //Calcula el valor de 0-255 a 0-1
+  static c255to1(input:number){
+    return CData.escalaValor(input,0,0,CData.r255_1);
+  }
+
+  //Calcula el valor de 0-1 a 0-255 
+  static c1to255(input:number){
+    return CData.escalaValor(input,0,0,CData.r1_255);
+  }
 }
  
+
+
+
 /*
 
 console.log("Vic");

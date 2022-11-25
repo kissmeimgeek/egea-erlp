@@ -72,8 +72,8 @@ export const fragmentBlend = `
 /// <summary>
 uniform vec4 DstColour;		// Colour (tint) applied to destination texture.
 uniform vec4 SrcColour;		// Colour (tint) applied to source texture
-uniform sampler2D imgs[];	// Background layer (AKA: Destination)
-uniform sampler2D imgs;	// Foreground layer (AKA: Source)
+uniform sampler2D Sample0;	// Background layer (AKA: Destination)
+uniform sampler2D Sample1;	// Foreground layer (AKA: Source)
 uniform sampler2D uSampler;
 
 //varying vec2 vTextureCoord;
@@ -189,10 +189,7 @@ vec3 blend (vec3 src, vec3 dst)
 /// <summary>
 void main ()
 {
-	for(int i=0;i<n;i++) {
-		int j = i;
-		and use myArray[j];
-	}
+	
 	
 
 	// Get samples from both layers

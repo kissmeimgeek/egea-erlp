@@ -54,7 +54,7 @@ export class Scene extends Container {
 
         this.connectors=new CConnectors();
 
-        this.sim=new CSim('spritesheet', 'spritesheet/degolladoRGB4.json');
+        this.sim=new CSim("degolladoRGB2", "images/atlas/degolladoRGB2.json");
         this.sim.x+=1300;
         this.sim.y+=100;
         this.addChild(this.sim);

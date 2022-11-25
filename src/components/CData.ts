@@ -82,16 +82,16 @@ export class CData{
     static scene:Scene;
     static viewport:Viewport;
 
-    static r1_255:number;
-    static r255_1:number;
+    //static r1_255:number;
+    //static r255_1:number;
 
     constructor (scene:Scene){
       CData.net={};
       CData.dataLoaded=false;
       CData.scene=scene;
 
-      CData.r1_255=CData.relacionDeEscala(0,1,0,255);
-      CData.r255_1=CData.relacionDeEscala(0,255,0,1);
+      //CData.r1_255=CData.relacionDeEscala(0,1,0,255);
+      //CData.r255_1=CData.relacionDeEscala(0,255,0,1);
     }
 
 
@@ -101,6 +101,7 @@ export class CData{
 /* Note, "slope" below is a constant for given numbers, so if you are calculating
    a lot of output values, it makes sense to calculate it once.  It also makes
    understanding the code easier */
+   /*
   static relacionDeEscala(input_start:number,input_end:number,output_start:number,output_end:number){
     return (1.0 * (output_end - output_start) / (input_end - input_start));
   };
@@ -119,6 +120,7 @@ export class CData{
   static c1to255(input:number){
     return CData.escalaValor(input,0,0,CData.r1_255);
   }
+  */
 }
  
 

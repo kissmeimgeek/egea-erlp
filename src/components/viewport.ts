@@ -158,7 +158,7 @@ export function create(renderer:Renderer) {
 
     // create elements
     //stars(viewport, STAR_SIZE, BORDER)
-    target.setup(viewport)
+    //target.setup(viewport)
     border(viewport)
 
     // fit and center the world into the panel

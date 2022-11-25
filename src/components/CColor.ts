@@ -4,7 +4,7 @@ export class CColor{
     b:number = 0;
     w:number = 0;
     size:number = 0;
-    constructor(r:number, g:number, b:number, w:number) {
+    constructor(r:number, g:number, b:number, w?:number) {
         this.r = r;
         this.g = g;
         this.b = b;

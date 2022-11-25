@@ -1,7 +1,8 @@
 
-import {Sprite, Texture} from 'pixi.js';
+import {Sprite, Texture, InteractionEvent} from 'pixi.js';
 import { Viewport } from 'pixi-viewport'
 import {randomInt,range } from './random'
+import { CData } from './CData';
 
 
 function overlap(x:number, y:number, viewport:Viewport, starSize:number) {
@@ -17,6 +18,11 @@ function overlap(x:number, y:number, viewport:Viewport, starSize:number) {
     return false
 }
 
+function clicked(e:InteractionEvent){
+        console.log(e);
+
+};
+
 export function stars(viewport:Viewport, starSize:number, border:number) {
     const stars = (viewport.worldWidth * viewport.worldHeight) / Math.pow(starSize, 2) * 0.1
     for (let i = 0; i < stars; i++) {
@@ -31,6 +37,12 @@ export function stars(viewport:Viewport, starSize:number, border:number) {
             y = range(border, viewport.worldHeight - border - starSize)
         } while (overlap(x, y, viewport, starSize))
         star.position.set(x, y)
+
+        star.interactive=true;
+        //star.on('pointermove', clicked, star);
+        star.on('pointerdown', (event) => { alert('clicked!'); });
+        
+
         viewport.addChild(star)
     }
 }

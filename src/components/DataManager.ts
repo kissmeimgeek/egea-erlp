@@ -1,12 +1,13 @@
 //import {Websocket, WebsocketBuilder, ConstantBackoff, TimeBuffer} from 'websocket-ts';
 import { Container} from "pixi.js";
-import { io, Socket } from "socket.io-client";
+
 
 import { CData } from "./CData";
 import { CPower} from "./CPower";
 import { CFixture } from "./CFixture";
 
 
+import { io, Socket } from "socket.io-client";
 interface ServerToClientEvents {
     rgetAllPowers: (powers:CPower[]) => void;
     rgetAllNet: (net:any) => void;
@@ -41,7 +42,8 @@ interface ServerToClientEvents {
   console.log("Vic");
   
   var loadData:boolean=true;
-  
+  var loaded:boolean=false;
+
   socket.on("connect" , () => {
      console.log("connect");
      if (loadData){
@@ -52,14 +54,18 @@ interface ServerToClientEvents {
   
   socket.on("rgetAllNet", (_response) => {
       console.log(_response);
+      loaded=true;
       CData.net=_response.net;
       CData.dataLoaded=true;
       CData.scene.dataManager=new DataManager(_response.net.d,_response.net.powers,_response.net.init);
       CData.scene.addChild(CData.scene.dataManager);
+      CData.scene.initConnectors();
       console.log(CData.net);
       socket.emit("wdmxIN"); 
       socket.emit("wdmxINPowers"); 
+
   });
+
 
 socket.on("rdmxINPowers", (_response) => {
     //console.log("rdmxIN");

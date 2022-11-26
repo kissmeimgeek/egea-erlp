@@ -1,7 +1,7 @@
 //npm run build
 //npm run start
 
-import { Application, Sprite, Container, Renderer, Ticker} from 'pixi.js'
+import { Application, Sprite, Container, Renderer, Ticker, Loader} from 'pixi.js'
 import { Scene } from './scenes/Scene'; // This is the import statement
 //import 'reflect-metadata';
 //import websocket from 'websocket';
@@ -17,7 +17,32 @@ import {CData} from './components/CData';
 
 
 
-
+// Include the following script, if not using ESM
+// <script src="https://cdn.jsdelivr.net/npm/@pixi/basis@6.2.2/dist/browser/basis.min.js"></script>
+ /*
+// Load transcoder from JSDeliver
+const BASIS_TRANSCODER_JS_URL = 'https://cdn.jsdelivr.net/npm/@pixi/basis@6.2.2/assets/basis_transcoder.js';
+const BASIS_TRANSCODER_WASM_URL = 'https://cdn.jsdelivr.net/npm/@pixi/basis@6.2.2/assets/basis_transcoder.wasm';
+ 
+// Without this, PixiJS can't decompress *.basis files!
+BasisLoader.loadTranscoder(
+  BASIS_TRANSCODER_JS_URL,
+  BASIS_TRANSCODER_WASM_URL,
+);
+ 
+// Make sure the BasisLoader is being used!
+//Loader.registerPlugin(BasisLoader);
+Extensions.add(BasisLoader);
+*/
+// Usage:
+/*
+Loader.shared
+    .add("your-file.basis", "your-file.basis")
+    .load((_, resources) => {
+       // Use this texture!
+       const texture = resources['your-file.basis'];
+     });
+*/
 /*
 const app = new Application({
     view: document.getElementById("pixi-canvas") as HTMLCanvasElement,
@@ -153,11 +178,18 @@ function start() {
     //vp.options.stopPropagation=false;
     CData.viewport=vp;
 
+
+    (function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+
+    
+
     update()
 }
 
 
 function update() {
+
+
     //const vp = viewport.get()
     const vp = viewport.get();
     if (vp.dirty || target.isDirty()) {
@@ -167,10 +199,11 @@ function update() {
         vp.dirty = false
     }
     requestAnimationFrame(() => update())
+
+  
 }
 
 window.onload = start
-
 
 
 

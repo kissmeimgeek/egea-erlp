@@ -83,6 +83,7 @@ socket.on("rdmxIN", (_response) => {
   CData.scene.dataManager.dmxIN=_response;
   CData.scene.patchViewer.updateDMX(_response);
   CData.viewport.dirty=true;
+  CData.scene.sim.updateColor(_response);
 });
 
   socket.on("rgetAllPowers", (powers) => {

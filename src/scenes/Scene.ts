@@ -6,6 +6,7 @@ import { CConnector, CConnectors } from "../components/CConnector";
 import { CSim } from "../components/CSim";
 //import { Viewport } from 'pixi-viewport';
 //import { CSocket } from '../components/CSocket';
+import { Transformer } from '@pixi-essentials/transformer';
 
 export class Scene extends Container {
     private readonly screenWidth: number;
@@ -51,12 +52,16 @@ export class Scene extends Container {
 
         this.patchViewer=new CPatchViewer(1,512,0,3,255);
         this.addChild(this.patchViewer);
+      
+        
 
         this.connectors=new CConnectors();
 
-        this.sim=new CSim("degolladoRGB2", "images/atlas/degolladoRGB2.json");
-        this.sim.x+=1300;
-        this.sim.y+=100;
+        this.sim=new CSim('spritesheet', 'spritesheet/degolladoRGB4.json');
+        //this.sim.x+=1300;
+        //this.sim.y+=100;
+        //this.sim.scale.x=0.5;
+        //this.sim.scale.y=0.5;
         this.addChild(this.sim);
 
 

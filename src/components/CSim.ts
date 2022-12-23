@@ -269,7 +269,7 @@ export class CSim extends Container {
                 this.geometry = new Geometry()
                     .addAttribute('aVertexPosition', // the attribute name
                         [-100, -100, // x, y
-                            100, -100, // x, y
+                            100, -100, // x, yds
                             100, 100, // x, y
                         -100, 100],
                         2) // the size of the attribute
@@ -304,6 +304,7 @@ export class CSim extends Container {
                 // start animating
                 //app.start();
                 this.init = true;
+            });
                 /*
                                 Ticker.shared.add((delta) => {
                                     let alphasTemp = this.shader.uniforms.uTexAlphas;
@@ -361,11 +362,22 @@ export class CSim extends Container {
                 });
                 */
 
+                /*
+                this.interactive=true;
 
-            });
+                CData.viewport.on("clicked",(e:any)=>{
+                    //console.log(e);
+                    //console.log(e.world);
+                    //console.log(CData.scene.toLocal(this.position));
+                    //console.log(this.toLocal(e.world));
+                    
+                });
+                */
+            
 
     }
 
+    
     /*
     linkToPowers(powers: CPower[]) {
 

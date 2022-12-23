@@ -6,6 +6,8 @@ import { CData } from "./CData";
 import { CFixture } from "./CFixture";
 import { CPower } from "./CPower";
 //import { Transformer } from '@pixi-essentials/transformer';
+import {Viewport} from 'pixi-viewport'
+import { CViewport } from "./CViewport";
 
 export class CDmxChannel extends Container{
     //fix:CFixture;
@@ -129,7 +131,7 @@ export class CPatchViewer extends Container{
         // the pointer events
         //CData.viewport.interactiveChildren=true;
         //CData.viewport.on('clicked', CData.scene.onDragStart, this);
-        this.on('pointerdown', CData.scene.onDragStart, this);
+        //CData.viewport.on('pointerdown', CData.scene.onDragStart, this);
         
     }
 

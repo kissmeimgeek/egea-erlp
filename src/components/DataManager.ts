@@ -36,7 +36,7 @@ interface ServerToClientEvents {
   //const ws:WebsocketBuilder;
   // please note that the types are reversed
  
-  var socket:Socket<ServerToClientEvents, ClientToServerEvents>  = io('ws://192.168.15.138:1881');
+  var socket:Socket<ServerToClientEvents, ClientToServerEvents>  = io('ws://note10:1881');
   var loadData:boolean=true;  
   
   console.log("Vic");

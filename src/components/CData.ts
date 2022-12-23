@@ -2,6 +2,8 @@
 import { Scene } from "src/scenes/Scene";
 import { CPower } from "./CPower";
 import { Viewport } from "pixi-viewport";
+import { CViewport } from "./CViewport";
+
 /*
 interface ServerToClientEvents {
     rgetAllPowers: (powers:CPower[]) => void;
@@ -80,7 +82,7 @@ export class CData{
     static dataLoaded:boolean=false;
     static net:any;
     static scene:Scene;
-    static viewport:Viewport;
+    static viewport:CViewport;
 
     //static r1_255:number;
     //static r255_1:number;
@@ -89,7 +91,7 @@ export class CData{
       CData.net={};
       CData.dataLoaded=false;
       CData.scene=scene;
-
+      //CData.viewport=scene.viewport as CViewport;
       //CData.r1_255=CData.relacionDeEscala(0,1,0,255);
       //CData.r255_1=CData.relacionDeEscala(0,255,0,1);
     }

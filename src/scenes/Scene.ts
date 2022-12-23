@@ -1,12 +1,14 @@
-import { Container, Sprite, Graphics, DisplayObject, InteractionEvent, Loader} from "pixi.js";
+import { Container, Sprite, Graphics, DisplayObject, InteractionEvent, Loader, Point} from "pixi.js";
 import { DataManager } from '../components/DataManager'; // This is the import statement
 import { CPatchViewer } from "../components/CPatchViewer";
 import { CData } from '../components/CData';
 import { CConnector, CConnectors } from "../components/CConnector";
 import { CSim } from "../components/CSim";
+import { CVisShader } from "../components/CVizShader";
+import { CWindow } from "../components/CWindow";
 //import { Viewport } from 'pixi-viewport';
 //import { CSocket } from '../components/CSocket';
-import { Transformer } from '@pixi-essentials/transformer';
+//import { Transformer } from '@pixi-essentials/transformer';
 
 export class Scene extends Container {
     private readonly screenWidth: number;
@@ -15,12 +17,13 @@ export class Scene extends Container {
     // We promoted clampy to a member of the class
     private clampy: Sprite;
     //private fixGraphic: Graphics;
-
+    private visShader:CVisShader;
 
     dataManager:DataManager = new DataManager({},[],false);  //Manager Temporal Por que el que lo construye es el socket
     patchViewer:CPatchViewer;
     connectors:CConnectors;
     sim:CSim;
+    //visShader:CVisShader;
 
     constructor(screenWidth: number, screenHeight: number) {
         super(); // Mandatory! This calls the superclass constructor.
@@ -65,11 +68,16 @@ export class Scene extends Container {
         this.addChild(this.sim);
 
 
-        this.interactive = true;
+        //this.interactive = true;
         //this.hitArea = ;
         //this.on('pointerup', this.onDragEnd);
         //this.on('pointerupoutside', this.onDragEnd);
 
+        
+        this.visShader = new CVisShader();
+        //this.addChild(this.visShader);
+        //this.visShader.window.calculateBounds();
+        this.addChild(new CWindow(this.visShader,true,true,true,true));
     }
 
     initConnectors(){
@@ -78,35 +86,50 @@ export class Scene extends Container {
     }
 
 
-
+/*
     dragTarget:DisplayObject=new Container();
     draggingTarget:Boolean=false;
+    dragOffset:Point=new Point();
 
-    onDragMove(event:InteractionEvent) {
+    dragMove(event:InteractionEvent) {
         if (this.draggingTarget) {
             this.dragTarget.parent.toLocal(event.data.global, undefined, this.dragTarget.position);
         }
+        console.log("dragMove");
     }
 
+    
 
-    onDragStart(event:InteractionEvent) {
+    dragStart(target:DisplayObject,screenPoint:Point) {
+        if(!this.draggingTarget){
         console.log("dragStart");
         // store a reference to the data
         // the reason for this is because of multitouch
         // we want to track the movement of this particular touch
-        this.dragTarget = event.data.target;
+        this.draggingTarget=true;
+        this.dragTarget = target;
         this.dragTarget.alpha = 0.5;
-        this.on('pointermove', this.onDragMove);
-    }
-
-    onDragEnd() {
-        if (this.draggingTarget) {
-            this.off('pointermove', this.onDragMove);
-            this.dragTarget.alpha = 1;
-            this.draggingTarget=false;
-            //dragTarget = null;
+        let localPoint=target.toLocal(screenPoint);
+        this.dragOffset.x=localPoint.x-target.x;
+        this.dragOffset.y=localPoint.y-target.y;
+        CData.viewport.on('pointermove', this.dragMove);
         }
     }
+
+    
+
+    dragEnd() {
+        if (this.draggingTarget) {
+            CData.viewport.off('pointermove', this.dragMove);
+            this.dragTarget.alpha = 1;
+            this.draggingTarget=false;
+            CData.viewport.pause=false;
+            //dragTarget = null;
+        }
+        console.log("dragEnd");
+    }
+*/
+   
 }
 
 

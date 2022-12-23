@@ -156,6 +156,8 @@ export function create(renderer:Renderer) {
 
     viewport.trackedPointers = [] ;
 
+    
+
     // create elements
     //stars(viewport, STAR_SIZE, BORDER)
     //target.setup(viewport)
